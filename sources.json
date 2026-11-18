@@ -4,7 +4,9 @@
   "authors": [
    "Jaafar Mahmoud",
    "Arthur Movsesyan",
+   "Cuong Huynh",
    "Mikhail Iumanov",
+   "Sergey Zagoruyko",
    "Sergey Kolyubin"
   ],
   "affiliation": "BE2R Lab, ITMO University",
@@ -12,7 +14,7 @@
   "year": "2026",
   "code": "https://github.com/be2rlab/ACCORD",
   "arxiv": null,
-  "paper_pdf": "renders/arxiv/accord_arxiv.pdf"
+  "paper_pdf": "renders/arxiv/main.pdf"
  },
  "film": {
   "src": "renders/promo/accord_promo_music.mp4",
@@ -22,28 +24,6 @@
   "poster_s": 71,
   "limit_mb": 45
  },
- "facts": [
-  {
-   "value": "6",
-   "label": "platforms, one configuration",
-   "note": "A drone, hand-held rigs, a survey rig, a rig carried outdoors and two phones. Only the rig file changes."
-  },
-  {
-   "value": "{specOursLead} of {specSeqN}",
-   "label": "scanned sequences with the best map",
-   "note": "Accord's map has the highest F-score at 5 cm of the dense pipelines, and one of the two highest on {specOursTopTwo} of them."
-  },
-  {
-   "value": "{resLiveGiantPoseAgeRooms} ms",
-   "label": "from an image to its pose",
-   "note": "The filter never waits for the map; a window is in the map {resLiveGiantMapAge} s after its last image."
-  },
-  {
-   "value": "6 GB",
-   "label": "of GPU memory is enough",
-   "note": "With DA3-Base on a laptop's RTX 3060, {lapShare} % of the windows are mapped at sensor rate."
-  }
- ],
  "scan_mirrors": [
   "runs/server/scans"
  ],

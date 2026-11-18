@@ -21,8 +21,9 @@ figures); every other one is under `--source`.
 - **The film.** The opening video (`film` in `sources.json`), encoded with its sound at 1280 px, with a poster and a
   chapter per scene, read from the film's own record. It plays muted when the page opens; "Play with sound" starts it
   over with its music.
-- **Facts.** The four numbers under the film (`facts`): each `{name}` is the paper's macro of that name
-  (`paper/tables/gen*macros.tex`), so they change with the paper.
+- **Facts.** A strip of numbers under the film, when `sources.json` has a `facts` list (it has none now: the
+  authors took the strip out on 2026-11-19): each `{name}` in a fact is the paper's macro of that name
+  (`paper/tables/gen*macros.tex`), so the numbers change with the paper.
 - **Abstract.** The paper's, read from `paper/sec/0_abstract.tex`.
 - **Results at a glance.** One panel per test set (`scoreboard`), one bar per dense pipeline: the mean map score the
   paper's tables typeset. Each panel has its own scale; a pipeline whose every sequence failed is listed as failed, one

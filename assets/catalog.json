@@ -3,7 +3,9 @@
   "authors": [
    "Jaafar Mahmoud",
    "Arthur Movsesyan",
+   "Cuong Huynh",
    "Mikhail Iumanov",
+   "Sergey Zagoruyko",
    "Sergey Kolyubin"
   ],
   "affiliation": "BE2R Lab, ITMO University",
@@ -116747,28 +116749,7 @@
    ]
   }
  ],
- "facts": [
-  {
-   "value": "6",
-   "label": "platforms, one configuration",
-   "note": "A drone, hand-held rigs, a survey rig, a rig carried outdoors and two phones. Only the rig file changes."
-  },
-  {
-   "value": "12 of 17",
-   "label": "scanned sequences with the best map",
-   "note": "Accord's map has the highest F-score at 5 cm of the dense pipelines, and one of the two highest on 16 of them."
-  },
-  {
-   "value": "38 ms",
-   "label": "from an image to its pose",
-   "note": "The filter never waits for the map; a window is in the map 1.36 s after its last image."
-  },
-  {
-   "value": "6 GB",
-   "label": "of GPU memory is enough",
-   "note": "With DA3-Base on a laptop's RTX 3060, 99 % of the windows are mapped at sensor rate."
-  }
- ],
+ "facts": [],
  "film": {
   "src": "assets/videos/film.mp4",
   "poster": "assets/videos/film.jpg",
