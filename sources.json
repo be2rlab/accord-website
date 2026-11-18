@@ -1,0 +1,872 @@
+{
+ "note": "What the page shows and where it comes from. Paths are under build_site.py's --source. A map with a report is placed by the report's map_to_reference (the rigid fit of its trajectory to the reference trajectory, nothing fitted to the scan) and must be the cloud the report scored (SHA-256); points are other pipelines' scored clouds, already placed by their reports. Accord's: of a sequence's runs of record, the one of the median map score, DA3-Giant. Phone rig: Accord's run of a recording is, of its three, the one of the median map score at 5 cm; beside it the reference's own map (RTAB-Map on a LiDAR iPhone), as the release ships it.",
+ "identity": {
+  "authors": [
+   "Jaafar Mahmoud",
+   "Arthur Movsesyan",
+   "Mikhail Iumanov",
+   "Sergey Kolyubin"
+  ],
+  "affiliation": "BE2R Lab, ITMO University",
+  "title": "Accord: Universal Online Metric Localization and Dense Mapping from one Camera and an IMU",
+  "year": "2026",
+  "code": "https://github.com/be2rlab/ACCORD",
+  "arxiv": null,
+  "paper_pdf": "renders/arxiv/accord_arxiv.pdf"
+ },
+ "film": {
+  "src": "renders/promo/accord_promo_music.mp4",
+  "record": "renders/promo/accord_promo.json",
+  "title": "Accord in three minutes",
+  "note": "The camera beside the map Accord builds from it, sped up: a GoPro in a shopping mall, then EuRoC, ORI, TUM-VI and Hilti-Oxford. Then the walks of the phone rig dataset, both maps of Oxford Spires CC05 against the laser scan, and the scores.",
+  "poster_s": 71,
+  "limit_mb": 45
+ },
+ "facts": [
+  {
+   "value": "6",
+   "label": "platforms, one configuration",
+   "note": "A drone, hand-held rigs, a survey rig, a rig carried outdoors and two phones. Only the rig file changes."
+  },
+  {
+   "value": "{specOursLead} of {specSeqN}",
+   "label": "scanned sequences with the best map",
+   "note": "Accord's map has the highest F-score at 5 cm of the dense pipelines, and one of the two highest on {specOursTopTwo} of them."
+  },
+  {
+   "value": "{resLiveGiantPoseAgeRooms} ms",
+   "label": "from an image to its pose",
+   "note": "The filter never waits for the map; a window is in the map {resLiveGiantMapAge} s after its last image."
+  },
+  {
+   "value": "6 GB",
+   "label": "of GPU memory is enough",
+   "note": "With DA3-Base on a laptop's RTX 3060, {lapShare} % of the windows are mapped at sensor rate."
+  }
+ ],
+ "scan_mirrors": [
+  "runs/server/scans"
+ ],
+ "systems": {
+  "ours": {
+   "label": "Accord",
+   "color": "#c8501e",
+   "color_dark": "#bd4200"
+  },
+  "mast3r_fusion": {
+   "label": "MASt3R-Fusion",
+   "color": "#1a68c7",
+   "color_dark": "#256ad7"
+  },
+  "vggt_slam": {
+   "label": "VGGT-SLAM 2.0",
+   "color": "#2c8d6b",
+   "note": "no metric scale: given the reference's by a similarity",
+   "color_dark": "#00815b"
+  },
+  "scarf": {
+   "label": "ScaRF mapper",
+   "color": "#874a84",
+   "note": "ScaRF-SLAM's mapper on Accord's poses",
+   "color_dark": "#9d5c9e",
+   "row": "ScaRF-SLAM's mapper"
+  },
+  "fvio": {
+   "label": "FoundationVIO",
+   "color": "#c69318",
+   "color_dark": "#b88c0f"
+  },
+  "base": {
+   "label": "DAVIO, as released",
+   "color": "#1fb1d1",
+   "note": "the system Accord builds on, as released, with DA3-Giant",
+   "color_dark": "#00a5c7",
+   "row": "DAVIO"
+  },
+  "reference": {
+   "label": "RTAB-Map, LiDAR iPhone",
+   "color": "#66707c",
+   "color_dark": "#8b95a1",
+   "note": "RTAB-Map's map from a LiDAR iPhone carried alongside, in its own colours; the scores are measured against it"
+  }
+ },
+ "datasets": [
+  {
+   "id": "euroc",
+   "name": "EuRoC",
+   "platform": "drone in Vicon rooms",
+   "camera": "grey camera",
+   "voxel_m": 0.02,
+   "scan_voxel_m": 0.03,
+   "sequences": [
+    {
+     "id": "V1_01_easy",
+     "label": "V1_01",
+     "ours": "runs/rev6/record_archives/V1_01_easy_r0",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/V1_01_easy",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/V1_01_easy",
+      "scarf": "runs/server/figures/points/scarf_own/V1_01_easy"
+     },
+     "runs": {
+      "base": "runs/server/rev6/base_giant/euroc/V1_01_easy_r1"
+     },
+     "missing": {
+      "fvio": "diverged at its start"
+     }
+    },
+    {
+     "id": "V1_02_medium",
+     "label": "V1_02",
+     "ours": "runs/rev6/record_archives/V1_02_medium_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/V1_02_medium",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/V1_02_medium",
+      "scarf": "runs/server/figures/points/scarf_own/V1_02_medium"
+     },
+     "runs": {
+      "base": "runs/server/rev6/base_giant/euroc/V1_02_medium_r0"
+     },
+     "missing": {
+      "fvio": "diverged at its start"
+     }
+    },
+    {
+     "id": "V1_03_difficult",
+     "label": "V1_03",
+     "ours": "runs/rev6/record_archives/V1_03_difficult_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/V1_03_difficult",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/V1_03_difficult",
+      "scarf": "runs/server/figures/points/scarf_own/V1_03_difficult"
+     },
+     "runs": {
+      "base": "runs/server/rev6/base_giant/euroc/V1_03_difficult_r2"
+     },
+     "missing": {
+      "fvio": "diverged at its start"
+     }
+    },
+    {
+     "id": "V2_01_easy",
+     "label": "V2_01",
+     "ours": "runs/rev6/record_archives/V2_01_easy_r4",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/V2_01_easy",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/V2_01_easy",
+      "scarf": "runs/server/figures/points/scarf_own/V2_01_easy"
+     },
+     "runs": {
+      "base": "runs/server/rev6/base_giant/euroc/V2_01_easy_r0"
+     },
+     "missing": {
+      "fvio": "diverged at its start"
+     }
+    },
+    {
+     "id": "V2_02_medium",
+     "label": "V2_02",
+     "ours": "runs/rev6/record_archives/V2_02_medium_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/V2_02_medium",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/V2_02_medium",
+      "scarf": "runs/server/figures/points/scarf_own/V2_02_medium"
+     },
+     "runs": {
+      "base": "runs/server/rev6/base_giant/euroc/V2_02_medium_r0"
+     },
+     "missing": {
+      "fvio": "diverged at its start"
+     }
+    },
+    {
+     "id": "V2_03_difficult",
+     "label": "V2_03",
+     "ours": "runs/rev6/record_archives/V2_03_difficult_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/V2_03_difficult",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/V2_03_difficult",
+      "scarf": "runs/server/figures/points/scarf_own/V2_03_difficult"
+     },
+     "runs": {
+      "base": "runs/server/rev6/base_giant/euroc/V2_03_difficult_r0"
+     },
+     "missing": {
+      "fvio": "diverged at its start"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ori",
+   "name": "ORI",
+   "platform": "hand-held through a building",
+   "camera": "colour fisheye",
+   "voxel_m": 0.03,
+   "scan_voxel_m": 0.06,
+   "sequences": [
+    {
+     "id": "r01",
+     "label": "R01",
+     "ours": "runs/rev6/record_archives/r01_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/r01",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/r01",
+      "scarf": "runs/server/figures/points/scarf_own/r01"
+     },
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/ori/r01_r0",
+      "base": "runs/server/rev6/base_giant/ori/r01_r0"
+     }
+    },
+    {
+     "id": "r02",
+     "label": "R02",
+     "ours": "runs/rev6/record_archives/r02_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/r02",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/r02",
+      "scarf": "runs/server/figures/points/scarf_own/r02"
+     },
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/ori/r02_r0",
+      "base": "runs/server/rev6/base_giant/ori/r02_r2"
+     }
+    },
+    {
+     "id": "r03",
+     "label": "R03",
+     "ours": "runs/rev6/record_archives/r03_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/r03",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/r03",
+      "scarf": "runs/server/figures/points/scarf_own/r03"
+     },
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/ori/r03_r0",
+      "base": "runs/server/rev6/base_giant/ori/r03_r1"
+     }
+    },
+    {
+     "id": "r04",
+     "label": "R04",
+     "ours": "runs/rev6/record_archives/r04_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/r04",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/r04",
+      "scarf": "runs/server/figures/points/scarf_own/r04"
+     },
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/ori/r04_r0",
+      "base": "runs/server/rev6/base_giant/ori/r04_r2"
+     }
+    },
+    {
+     "id": "r05",
+     "label": "R05",
+     "ours": "runs/rev6/record_archives/r05_r2",
+     "points": {
+      "mast3r_fusion": "runs/server/figures/points/mast3r_fusion/r05",
+      "vggt_slam": "runs/server/figures/points/vggt_slam/r05",
+      "scarf": "runs/server/figures/points/scarf_own/r05"
+     },
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/ori/r05_r0",
+      "base": "runs/server/rev6/base_giant/ori/r05_r0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "hilti",
+   "name": "Hilti-Oxford",
+   "platform": "survey rig at a heritage site",
+   "camera": "grey fisheye",
+   "voxel_m": 0.04,
+   "scan_voxel_m": 0.08,
+   "sequences": [
+    {
+     "id": "exp18",
+     "label": "exp18",
+     "ours": "runs/server/hilti/full_rev3g/exp18_r0",
+     "runs": {
+      "mast3r_fusion": "runs/server/hilti/baselines/mast3r_fusion/handheld/exp18_r0",
+      "vggt_slam": "runs/server/hilti/baselines/vggt_slam/exp18_r0",
+      "scarf": "runs/server/hilti/baselines/scarf_rev3g/exp18_r0",
+      "fvio": "runs/server/rev6/fvio/hilti/exp18_r0"
+     },
+     "missing": {
+      "base": "its release does not run this rig"
+     }
+    },
+    {
+     "id": "exp16",
+     "label": "exp16",
+     "ours": "runs/server/hilti/full_rev3g/exp16_r0",
+     "runs": {
+      "vggt_slam": "runs/server/hilti/baselines/vggt_slam/exp16_r0",
+      "scarf": "runs/server/hilti/baselines/scarf_rev3g/exp16_r0",
+      "fvio": "runs/server/rev6/fvio/hilti/exp16_r0"
+     },
+     "missing": {
+      "mast3r_fusion": "no map",
+      "base": "its release does not run this rig"
+     }
+    },
+    {
+     "id": "exp21",
+     "label": "exp21",
+     "ours": "runs/server/hilti/full_rev3g/exp21_r0",
+     "runs": {
+      "mast3r_fusion": "runs/server/hilti/baselines/mast3r_fusion/handheld/exp21_r0",
+      "vggt_slam": "runs/server/hilti/baselines/vggt_slam/exp21_r0",
+      "scarf": "runs/server/hilti/baselines/scarf_rev3g/exp21_r0",
+      "fvio": "runs/server/rev6/fvio/hilti/exp21_r0"
+     },
+     "missing": {
+      "base": "its release does not run this rig"
+     }
+    }
+   ]
+  },
+  {
+   "id": "spires",
+   "name": "Oxford Spires",
+   "platform": "carried through a college, outdoors",
+   "camera": "colour fisheye",
+   "voxel_m": 0.06,
+   "scan_voxel_m": 0.12,
+   "sequences": [
+    {
+     "id": "cc05",
+     "label": "CC05",
+     "ours": "runs/server/rev6/spires/cc05_r2",
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/spires/cc05_r0",
+      "scarf": "runs/server/spires/baselines/scarf/cc05_r0"
+     },
+     "missing": {
+      "mast3r_fusion": "failed (over 10 m off)",
+      "vggt_slam": "failed (over 10 m off)",
+      "base": "failed (over 10 m off)"
+     }
+    },
+    {
+     "id": "cc03",
+     "label": "CC03",
+     "ours": "runs/server/rev6/spires/cc03_r2",
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/spires/cc03_r0",
+      "scarf": "runs/server/spires/baselines/scarf/cc03_r0",
+      "vggt_slam": "runs/server/spires/baselines/vggt_slam/cc03_r0"
+     },
+     "missing": {
+      "mast3r_fusion": "failed (over 10 m off)",
+      "base": "no map"
+     }
+    },
+    {
+     "id": "cc02",
+     "label": "CC02",
+     "ours": "runs/server/rev6/spires/cc02_r0",
+     "runs": {
+      "fvio": "runs/server/rev6/fvio/spires/cc02_r0",
+      "scarf": "runs/server/spires/baselines/scarf/cc02_r0",
+      "vggt_slam": "runs/server/spires/baselines/vggt_slam/cc02_r0"
+     },
+     "missing": {
+      "mast3r_fusion": "failed (over 10 m off)",
+      "base": "no map"
+     }
+    }
+   ]
+  },
+  {
+   "id": "phones",
+   "name": "Phone rig",
+   "platform": "two phones carried together, indoors and outdoors",
+   "camera": "phone cameras (Note 9, iPhone)",
+   "voxel_m": 0.02,
+   "scan_voxel_m": 0.04,
+   "reference_cloud": true,
+   "compare": "reference",
+   "modes": [
+    "image",
+    "height"
+   ],
+   "note": "Accord's map beside the reference's, each in its own colours",
+   "sequences": [
+    {
+     "id": "vio01_android",
+     "label": "vio01 · Note 9",
+     "ours": "runs/server/vio/accord/vio01_android/r2"
+    },
+    {
+     "id": "vio04_android",
+     "label": "vio04 · Note 9",
+     "ours": "runs/server/vio/accord/vio04_android/r1"
+    },
+    {
+     "id": "vio06_android",
+     "label": "vio06 · Note 9",
+     "ours": "runs/server/vio/accord/vio06_android/r1"
+    },
+    {
+     "id": "vio11_android",
+     "label": "vio11 · Note 9",
+     "ours": "runs/server/vio/accord/vio11_android/r0"
+    },
+    {
+     "id": "vio11_iphone",
+     "label": "vio11 · iPhone",
+     "ours": "runs/server/vio/accord/vio11_iphone/r2"
+    }
+   ],
+   "in_paper": false
+  },
+  {
+   "id": "tumvi",
+   "name": "TUM-VI",
+   "platform": "hand-held in a motion-capture room",
+   "camera": "grey fisheye",
+   "voxel_m": 0.02,
+   "note": "no laser scan: trajectories only are scored",
+   "sequences": [
+    {
+     "id": "room1",
+     "label": "room1",
+     "ours": "runs/server/tumvi/full_giant/room1_r0"
+    },
+    {
+     "id": "room2",
+     "label": "room2",
+     "ours": "runs/server/tumvi/full_giant/room2_r0"
+    },
+    {
+     "id": "room3",
+     "label": "room3",
+     "ours": "runs/server/tumvi/full_giant/room3_r0"
+    },
+    {
+     "id": "room4",
+     "label": "room4",
+     "ours": "runs/server/tumvi/full_giant/room4_r0"
+    },
+    {
+     "id": "room5",
+     "label": "room5",
+     "ours": "runs/server/tumvi/full_giant/room5_r0"
+    },
+    {
+     "id": "room6",
+     "label": "room6",
+     "ours": "runs/server/tumvi/full_giant/room6_r0"
+    }
+   ]
+  },
+  {
+   "id": "realsense",
+   "name": "RealSense D455",
+   "platform": "hand-held through a lab",
+   "camera": "colour camera",
+   "voxel_m": 0.02,
+   "note": "our recording: no reference",
+   "sequences": [
+    {
+     "id": "beerlab",
+     "label": "lab",
+     "ours": "runs/realsense/beerlab_davio_r0"
+    }
+   ]
+  },
+  {
+   "id": "iphone",
+   "name": "iPhone",
+   "platform": "phone in the hand",
+   "camera": "phone camera",
+   "voxel_m": 0.015,
+   "note": "our recording: no reference",
+   "sequences": [
+    {
+     "id": "fd2bf233da",
+     "label": "walk",
+     "ours": "runs/server/iphone/fd2bf233da_giant"
+    }
+   ]
+  }
+ ],
+ "videos": [
+  {
+   "id": "spires_compare",
+   "title": "Accord and FoundationVIO, Oxford Spires CC05",
+   "featured": true,
+   "limit_mb": 14,
+   "note": "Each map coloured by its distance to the laser scan, 0 to 30 cm; both placed by their own trajectories.",
+   "items": [
+    {
+     "label": "Side by side",
+     "src": "bench/rev6/figures/spires_cc05_compare.mp4"
+    }
+   ]
+  },
+  {
+   "id": "ori",
+   "title": "ORI R03",
+   "note": "hand-held through a building, colour fisheye",
+   "items": [
+    {
+     "label": "Fly-through",
+     "src": "renders/slides/ori/map_build_fly.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/ori/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/ori/map_build_top.mp4"
+    },
+    {
+     "label": "Rerun",
+     "src": "renders/slides/ori/rerun.mp4"
+    },
+    {
+     "label": "Four views",
+     "src": "renders/slides/ori/grid.mp4"
+    }
+   ]
+  },
+  {
+   "id": "euroc",
+   "title": "EuRoC V1_02",
+   "note": "drone in a Vicon room, grey camera",
+   "items": [
+    {
+     "label": "Fly-through",
+     "src": "renders/slides/euroc/map_build_fly.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/euroc/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/euroc/map_build_top.mp4"
+    },
+    {
+     "label": "Rerun",
+     "src": "renders/slides/euroc/rerun.mp4"
+    },
+    {
+     "label": "Four views",
+     "src": "renders/slides/euroc/grid.mp4"
+    }
+   ]
+  },
+  {
+   "id": "hilti",
+   "title": "Hilti-Oxford exp14",
+   "note": "survey rig at a heritage site, grey fisheye",
+   "items": [
+    {
+     "label": "Fly-through",
+     "src": "renders/slides/hilti/map_build_fly.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/hilti/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/hilti/map_build_top.mp4"
+    },
+    {
+     "label": "Rerun",
+     "src": "renders/slides/hilti/rerun.mp4"
+    },
+    {
+     "label": "Four views",
+     "src": "renders/slides/hilti/grid.mp4"
+    }
+   ]
+  },
+  {
+   "id": "tumvi",
+   "title": "TUM-VI room2",
+   "note": "hand-held in a motion-capture room, grey fisheye",
+   "items": [
+    {
+     "label": "Fly-through",
+     "src": "renders/slides/tumvi/map_build_fly.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/tumvi/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/tumvi/map_build_top.mp4"
+    },
+    {
+     "label": "Rerun",
+     "src": "renders/slides/tumvi/rerun.mp4"
+    },
+    {
+     "label": "Four views",
+     "src": "renders/slides/tumvi/grid.mp4"
+    }
+   ]
+  },
+  {
+   "id": "corridor",
+   "title": "TUM-VI corridor1",
+   "note": "hand-held along corridors, grey fisheye",
+   "items": [
+    {
+     "label": "Fly-through",
+     "src": "renders/slides/tumvi_corridor1/map_build_fly.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/tumvi_corridor1/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/tumvi_corridor1/map_build_top.mp4"
+    },
+    {
+     "label": "Rerun",
+     "src": "renders/slides/tumvi_corridor1/rerun.mp4"
+    }
+   ]
+  },
+  {
+   "id": "realsense",
+   "title": "RealSense D455, our lab",
+   "note": "hand-held, colour camera",
+   "items": [
+    {
+     "label": "Fly-through",
+     "src": "renders/slides/realsense_beerlab/map_build_fly.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/realsense_beerlab/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/realsense_beerlab/map_build_top.mp4"
+    },
+    {
+     "label": "Four views",
+     "src": "renders/slides/realsense_beerlab/grid.mp4"
+    }
+   ]
+  },
+  {
+   "id": "beach",
+   "title": "Phone walk, beach promenade",
+   "note": "a phone held in portrait, uncalibrated",
+   "items": [
+    {
+     "label": "Four views",
+     "src": "website/assets/videos/beach_open3d.mp4"
+    },
+    {
+     "label": "Rerun",
+     "src": "website/assets/videos/beach_rerun.mp4"
+    }
+   ]
+  },
+  {
+   "id": "gopro",
+   "title": "Shopping mall, GoPro",
+   "note": "hand-held on two levels among shoppers (GoPro HERO13 Black, its stabilization undone in software)",
+   "limit_mb": 32,
+   "items": [
+    {
+     "label": "Four views",
+     "src": "renders/slides/gopro_mall/grid.mp4"
+    },
+    {
+     "label": "Three-quarter",
+     "src": "renders/slides/gopro_mall/map_build_hero.mp4"
+    },
+    {
+     "label": "Overhead",
+     "src": "renders/slides/gopro_mall/map_build_top.mp4"
+    }
+   ],
+   "caption_note": "Sped up. People are blurred in the camera's frames, and Accord's people filter keeps them out of the map."
+  },
+  {
+   "id": "phone_dataset",
+   "section": "dataset",
+   "title": "The phone rig dataset",
+   "width": 1920,
+   "limit_mb": 14,
+   "note": "Every walk at four times its speed, from the iPhone's released frames, each starting 30 s into its recording",
+   "items": [
+    {
+     "label": "Eleven walks",
+     "src": "runs/server/vio/viz/dataset_mosaic.mp4"
+    }
+   ]
+  }
+ ],
+ "replays": [
+  {
+   "id": "ori",
+   "title": "ORI R01",
+   "src": "website/assets/rerun/ori.rrd"
+  },
+  {
+   "id": "euroc",
+   "title": "EuRoC V1_01",
+   "src": "website/assets/rerun/euroc.rrd"
+  },
+  {
+   "id": "tumvi",
+   "title": "TUM-VI room1",
+   "src": "website/assets/rerun/tumvi.rrd"
+  },
+  {
+   "id": "beach",
+   "title": "Phone walk",
+   "src": "website/assets/rerun/beach.rrd"
+  }
+ ],
+ "figures": [
+  {
+   "id": "method",
+   "src": "repo:paper/figures/arch_canva2.pdf"
+  },
+  {
+   "id": "spectrum",
+   "src": "repo:paper/figures/spectrum.pdf",
+   "section": "results",
+   "layout": "wide",
+   "alt": "Every dense pipeline's map F-score at 5 cm on every scanned sequence of EuRoC, ORI, Hilti-Oxford and Oxford Spires",
+   "caption": "<b>Every scanned sequence.</b> The map's F-score at 5 cm per sequence, each placed by its system's own trajectory; the means are the table's. An &times; at 0: no map, or the map of a trajectory that failed (more than 10 m off). &dagger; given the reference's scale; &Dagger; the mapper alone, on Accord's poses."
+  },
+  {
+   "id": "spires",
+   "src": "paper_cvpr/figures/spires_compare.pdf",
+   "section": "results",
+   "layout": "side",
+   "alt": "Accord and FoundationVIO on Oxford Spires CC05: the scan each covers, and a slice of both maps coloured by distance to the scan",
+   "caption": "<b>Accord against FoundationVIO outdoors</b> (Oxford Spires CC05, the sequence where Accord is furthest ahead). (a) The scan the reference cameras saw, from above, blue where the map comes within 5 cm of it, with each system's own trajectory. (b) The scene cut 1.5 m above the ground, 10 cm thick, around the 20 m square where both maps have the most points in the slice: the scan in grey, each map point coloured by its distance to the scan. Both maps placed by their own trajectories; Accord's: the median of three runs."
+  }
+ ],
+ "results": [
+  {
+   "id": "overview",
+   "title": "Public benchmarks",
+   "groups": [
+    [
+     "Dense map: F-score at 5 cm ↑",
+     4
+    ],
+    [
+     "Trajectory error (cm) ↓",
+     4
+    ]
+   ],
+   "columns": [
+    "EuRoC",
+    "ORI",
+    "Hilti-Oxford",
+    "Oxford Spires",
+    "EuRoC",
+    "TUM-VI",
+    "Hilti-Oxford",
+    "Oxford Spires"
+   ],
+   "subcolumns": [
+    "drone, rooms",
+    "hand-held, buildings",
+    "survey rig",
+    "outdoors",
+    "drone, rooms",
+    "hand-held",
+    "survey rig",
+    "outdoors"
+   ],
+   "rows": "repo:paper/tables/gen5_overview_rows.tex",
+   "note": "The paper's Tab. 2, as typeset. Means over each dataset's sequences. Maps: the F-score at 5 cm, each placed by its system's own trajectory (Hilti-Oxford: the three sequences its scan covers). Trajectories: the error in cm (Hilti-Oxford: at the surveyed points where the reference is sparse). ×: every sequence failed (no output, or a trajectory more than 10 m off). –: not run, or no trajectory of its own. † given the reference's scale. ‡ with its own depth model, on Accord's poses. Bold: the best; underlined: the second best."
+  },
+  {
+   "id": "phones",
+   "title": "Phone rig",
+   "groups": [
+    [
+     "Note 9, {phAndroidN} walks",
+     3
+    ],
+    [
+     "iPhone, {phIphoneN} walks",
+     3
+    ]
+   ],
+   "columns": [
+    "F@5 ↑",
+    "F@10 ↑",
+    "ATE (m) ↓",
+    "F@5 ↑",
+    "F@10 ↑",
+    "ATE (m) ↓"
+   ],
+   "rows": "repo:paper/tables/gen7_phones_rows.tex",
+   "note": "The paper's Tab. 3, as typeset. Means over each phone's recordings: the map's F-score at 5 and 10 cm against the LiDAR phone's map, placed by the system's own trajectory, and the trajectory's error in m after a rigid fit. ×: failed. –: not run, or no trajectory of its own. † given the reference's scale. ‡ with its own depth model, on Accord's poses. Bold: the best; underlined: the second best."
+  }
+ ],
+ "scoreboard": [
+  {
+   "table": "overview",
+   "column": 0,
+   "name": "EuRoC",
+   "where": "a drone in rooms"
+  },
+  {
+   "table": "overview",
+   "column": 1,
+   "name": "ORI",
+   "where": "hand-held, in buildings"
+  },
+  {
+   "table": "overview",
+   "column": 2,
+   "name": "Hilti-Oxford",
+   "where": "a survey rig, heritage site"
+  },
+  {
+   "table": "overview",
+   "column": 3,
+   "name": "Oxford Spires",
+   "where": "carried outdoors"
+  },
+  {
+   "table": "phones",
+   "column": 0,
+   "name": "Note 9",
+   "where": "our phone rig, campus walks"
+  },
+  {
+   "table": "phones",
+   "column": 3,
+   "name": "iPhone",
+   "where": "our phone rig, campus walks"
+  }
+ ],
+ "palette_note": "The pipelines' colours are the paper's: every pair told apart under protanopia and deuteranopia (OKLab dE >= 9, Machado 2009) and with normal vision (>= 15), on white; color_dark: the same hues stepped for the dark page, checked the same way on its card (#0f1728). On white two of them have less than 3:1 against the card, so every bar carries its pipeline's name and its number.",
+ "posters": {
+  "spires": "renders/slides/spires_cc05/map_hero.png",
+  "iphone": "renders/slides/iphone_fd2bf233da/map_hero.png"
+ },
+ "dataset": {
+  "sequences_csv": "runs/server/vio/release_mirror/sequences.csv",
+  "video": "phone_dataset",
+  "foot": "Duration and path: the reference's, over the walk. Note 9 and iPhone: their recordings as released; the iPhone's stops where its app first stalled. vs ARKit: the reference against the iPhone's ARKit, RMS after a rigid fit over the iPhone's part of the walk; how far the reference can be trusted.",
+  "status": "Not yet released: the licence and the permission to publish footage of the site are still to be confirmed."
+ }
+}
