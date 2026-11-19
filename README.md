@@ -52,7 +52,10 @@ figures); every other one is under `--source`.
   it goes in): the architecture, and under the results the per-sequence spectrum and the Oxford Spires comparison,
   rendered from their PDFs.
 - **Posters.** A still per dataset for its card where its videos have none (`posters`), scaled to 720 px.
-- **Dataset.** The phone rig's walks, from the release's `sequences.csv`.
+- **Dataset.** The phone rig's walks, from the release's `sequences.csv`. `dataset.release` says where it is published:
+  the address and licence come from the authors' decisions file (`meta`), the size from the package's `archives.json`,
+  and the summary rows and download commands from the package's dataset card (`package`), word for word. It also
+  adds the Dataset button at the top of the page.
 - **Code and citation.** The commands of the repository's README; the BibTeX entry is written from `identity`.
 
 ## Design
@@ -66,6 +69,10 @@ text, JetBrains Mono for labels, from Google Fonts. The pipelines' colours are t
 ## Changing it
 
 - **Content.** Add a sequence, a pipeline, a video or a replay in `sources.json`, then build that part again.
+- **The way through the page.** A section names itself in `index.html` (`data-nav`, the short name; `data-tour`, one
+  line on what it holds). From the sections that are shown, `js/app.js` ("the page itself") builds the bar on top, the
+  tour under the film, each section's number, the link to the next section, the rail at the side and the footer's list.
+  To add or move a section, add or move it in `index.html`; nothing else lists them.
 - **First shot.** The opening view of each dataset (`LOOK`) is set in `js/app.js`.
 - **Authors and links.** `identity` in `sources.json`: `authors`, `affiliation`, `title`, `year`, `code`. The paper's
   button opens `arxiv` when it is set, else the PDF named by `paper_pdf`, which the build copies to `assets/accord.pdf`.

@@ -690,6 +690,16 @@
     {
      "label": "Eleven walks",
      "src": "runs/server/vio/viz/dataset_mosaic.mp4"
+    },
+    {
+     "label": "Both phones and the depth",
+     "src": "~/dev/accord-phone-rig/assets/demo_phones_vio11.mp4",
+     "note": "One moment on the Note 9, on the iPhone and in the iPhone's LiDAR depth, walk vio11, from the released frames, sped up"
+    },
+    {
+     "label": "The reference",
+     "src": "~/dev/accord-phone-rig/assets/demo_reference_vio11.mp4",
+     "note": "RTAB-Map's map of walk vio11 from above with its trajectory growing, beside the iPhone's frame at that moment"
     }
    ]
   }
@@ -847,6 +857,10 @@
   "sequences_csv": "runs/server/vio/release_mirror/sequences.csv",
   "video": "phone_dataset",
   "foot": "Duration and path: the reference's, over the walk. Note 9 and iPhone: their recordings as released; the iPhone's stops where its app first stalled. vs ARKit: the reference against the iPhone's ARKit, RMS after a rigid fit over the iPhone's part of the walk; how far the reference can be trusted.",
-  "status": "Not yet released: the licence and the permission to publish footage of the site are still to be confirmed."
+  "release": {
+   "meta": "bench/phone_rig/hf_meta.json",
+   "package": "~/dev/accord-phone-rig",
+   "get_note": "The last command unpacks the image archives into the layout the dataset card describes. To run Accord on it: make phone_rig RELEASE=<the unpacked folder> in the Accord code, then the walks are the sequences vio01 to vio13 of the setups rig_android and rig_iphone."
+  }
  }
 }

@@ -29,13 +29,14 @@
   <div class="wrap">
     <a class="brand" href="#top"><span class="mark" aria-hidden="true">A</span>Accord</a>
     <div class="links" id="navLinks">
-      <a class="optional" href="#abstract">Abstract</a>
+      <a href="#abstract">Abstract</a>
       <a href="#scoreboard">Results</a>
-      <a class="optional" href="#method">Method</a>
+      <a href="#method">Method</a>
       <a href="#maps">Maps</a>
-      <a class="optional-sm" href="#videos">Videos</a>
-      <a class="optional" href="#dataset">Dataset</a>
-      <a class="optional-sm" href="#run">Code</a>
+      <a href="#videos">Videos</a>
+      <a href="#results">Tables</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#run">Code</a>
     </div>
     <a class="repo" id="navRepo" hidden>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
@@ -44,6 +45,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
     </button>
   </div>
+  <div class="progress" aria-hidden="true"><i id="progress"></i></div>
 </nav>
 
 <header class="hero" id="top">
@@ -78,10 +80,13 @@
   <div class="wrap">
     <div class="facts" id="facts" aria-label="Key facts"></div>
   </div>
+  <div class="wrap">
+    <nav class="tour" id="tour" aria-label="On this page"></nav>
+  </div>
 </header>
 
 <main>
-<section id="abstract">
+<section id="abstract" data-nav="Abstract" data-tour="What Accord is and what it claims">
   <div class="wrap">
     <div class="abstract-grid">
       <div class="abstract-side reveal">
@@ -96,7 +101,7 @@
   </div>
 </section>
 
-<section id="scoreboard" class="band">
+<section id="scoreboard" class="band" data-nav="Results" data-tour="Map scores against the dense pipelines, per test set">
   <div class="wrap">
     <div class="score-head reveal">
       <div>
@@ -112,7 +117,7 @@
   </div>
 </section>
 
-<section id="method">
+<section id="method" data-nav="Method" data-tour="A filter, a depth model, and the agreement that ties their scales">
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">How it works</p>
@@ -134,20 +139,7 @@
   </div>
 </section>
 
-<section id="results" class="band" hidden>
-  <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">The paper's tables</p>
-      <h2>Results in full</h2>
-      <p class="lead">Every pipeline on every benchmark, as the paper typesets them: the dense maps against the scans, and
-        the trajectories against the reference.</p>
-    </div>
-    <div id="resultsTables"></div>
-    <div class="figures" id="resultFigures"></div>
-  </div>
-</section>
-
-<section id="maps">
+<section id="maps" class="band" data-nav="Maps" data-tour="Every scored map in your browser, beside the others">
   <div class="wrap wide">
     <div class="reveal">
       <p class="eyebrow">In your browser</p>
@@ -233,7 +225,7 @@
   </div>
 </section>
 
-<section id="videos" class="band">
+<section id="videos" data-nav="Videos" data-tour="The maps as they are built, and replays of whole runs">
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Watch it build</p>
@@ -259,23 +251,49 @@
   </div>
 </section>
 
-<section id="dataset" hidden>
+<section id="results" class="band" data-nav="Tables" data-tour="Every pipeline on every benchmark, as the paper typesets them" hidden>
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">The paper's tables</p>
+      <h2>Results in full</h2>
+      <p class="lead">Every pipeline on every benchmark, as the paper typesets them: the dense maps against the scans, and
+        the trajectories against the reference.</p>
+    </div>
+    <div id="resultsTables"></div>
+    <div class="figures" id="resultFigures"></div>
+  </div>
+</section>
+
+<section id="dataset" data-nav="Dataset" data-tour="Our phone rig walks, with a LiDAR reference" hidden>
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Our recordings</p>
       <h2>Phone rig dataset</h2>
       <p class="lead" id="datasetLead"></p>
+      <div class="paper-links" id="datasetLinks"></div>
     </div>
+    <div class="seg wrap-seg dataset-clips" id="datasetClips" role="tablist" hidden></div>
     <figure class="dataset-video"><video id="datasetVideo" muted loop playsinline preload="metadata"></video>
       <figcaption id="datasetCaption"></figcaption></figure>
     <div class="stats" id="datasetStats"></div>
+    <div class="release" id="datasetRelease" hidden>
+      <div>
+        <h3>In the release</h3>
+        <dl class="spec" id="datasetFacts"></dl>
+      </div>
+      <div>
+        <h3>Get it</h3>
+        <div class="cite"><pre id="datasetGet"></pre><button class="copy" id="copyDatasetGet" type="button">Copy</button></div>
+        <p class="note" id="datasetGetNote"></p>
+      </div>
+    </div>
     <div class="scores results-table" id="datasetTable"></div>
     <p class="foot" id="datasetFoot"></p>
     <p class="note"><a href="#maps" id="datasetMapsLink">Accord's maps beside RTAB-Map's in the explorer →</a></p>
   </div>
 </section>
 
-<section id="run" class="band">
+<section id="run" class="band" data-nav="Code" data-tour="Set up once, then run any dataset">
   <div class="wrap">
     <div class="reveal">
       <p class="eyebrow">Open source</p>
@@ -317,14 +335,36 @@ scripts/score.sh runs/V1_01_easy</pre>
 </main>
 
 <footer>
-  <div class="wrap">
-    <p><span class="who" id="footerIdentity"></span> Accord is GPL-3.0.</p>
-    <p>Built on <a href="https://github.com/rpng/open_vins">OpenVINS</a>,
-      <a href="https://github.com/ByteDance-Seed/Depth-Anything-3">Depth Anything 3</a> and
-      <a href="https://github.com/verlab/accelerated_features">XFeat</a>; maps drawn with
-      <a href="https://threejs.org">three.js</a>, runs replayed with <a href="https://rerun.io">Rerun</a>.</p>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="#top"><span class="mark" aria-hidden="true">A</span>Accord</a>
+      <p>Dense metric maps from one camera and one IMU, built live as the camera moves.</p>
+      <div class="buttons" id="footLinks"></div>
+    </div>
+    <div class="foot-col">
+      <h4>On this page</h4>
+      <div class="foot-nav" id="footNav"></div>
+    </div>
+    <div class="foot-col">
+      <h4>Built on</h4>
+      <div class="foot-list">
+        <a href="https://github.com/rpng/open_vins">OpenVINS</a>
+        <a href="https://github.com/ByteDance-Seed/Depth-Anything-3">Depth Anything 3</a>
+        <a href="https://github.com/verlab/accelerated_features">XFeat</a>
+        <a href="https://threejs.org">three.js</a>
+        <a href="https://rerun.io">Rerun</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <p class="who" id="footerIdentity"></p>
+    <p id="footLicence">Accord is GPL-3.0.</p>
   </div>
 </footer>
+
+<nav class="rail" id="rail" aria-label="Sections, at the side"></nav>
+<a class="to-top" id="toTop" href="#top" aria-label="Back to the top">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19V7.8l-4.6 4.6L5 11l7-7 7 7-1.4 1.4L13 7.8V19h-2Z"/></svg></a>
 
 </body>
 </html>

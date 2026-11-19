@@ -73,6 +73,8 @@ const identity = catalog.identity || {};
 const ICON = {
   paper: 'M6 2h8l5 5v15H6V2Zm7 1.5V8h4.5L13 3.5ZM8 12h9v1.6H8V12Zm0 3.4h9V17H8v-1.6Z',
   code: 'm8.6 16.6-4.6-4.6 4.6-4.6L7.2 6 1.2 12l6 6 1.4-1.4Zm6.8 0 4.6-4.6-4.6-4.6L16.8 6l6 6-6 6-1.4-1.4Z',
+  data: 'M12 3C7.6 3 4 4.3 4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6c0-1.7-3.6-3-8-3Zm0 2c3.6 0 5.7.8 6 1-.3.2-2.4 1-6 1s-5.7-.8-6-1c.3-.2 2.4-1 6-1ZM6 8.3c1.5.5 3.6.7 6 .7s4.5-.2 6-.7V12c-.3.2-2.4 1-6 1s-5.7-.8-6-1V8.3Zm0 6c1.5.5 3.6.7 6 .7s4.5-.2 6-.7V18c-.3.2-2.4 1-6 1s-5.7-.8-6-1v-3.7Z',
+  licence: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm-1.2 11.6-3.4-3.4 1.4-1.4 2 2 4.8-4.8 1.4 1.4-6.2 6.2Z',
 };
 const linkTo = (className, href, label, icon) => {
   const a = Object.assign(document.createElement('a'), { className, href });
@@ -94,7 +96,10 @@ if (identity.code) {
   $('cloneLine').textContent = `git clone --recursive ${identity.code}.git`;
   $('cloneDir').textContent = identity.code.split('/').pop();
 }
-$('footerIdentity').textContent = authors.length ? `${authors.join(', ')}${identity.affiliation ? ` · ${identity.affiliation}` : ''}.` : '';
+// the dataset, where it is published (build_site.py dataset, sources.json dataset.release)
+const release = catalog.dataset?.release;
+if (release) $('identityLinks').append(linkTo('button', release.hub, 'Dataset', 'data'));
+$('footerIdentity').textContent = authors.length ? `${authors.join(', ')}${identity.affiliation ? ` · ${identity.affiliation}` : ''}` : '';
 if (identity.abstract) $('abstractText').innerHTML = identity.abstract;
 else $('abstract').hidden = true;
 
@@ -621,11 +626,22 @@ function renderDataset() {
     + 'alongside as the reference. Every frame is as released: people, faces and number plates blurred.';
   if (item) {
     const video = $('datasetVideo');
-    video.poster = item.poster;
-    video.src = item.src;
-    $('datasetCaption').textContent = `${group.note}.`;
+    let inView = false;
+    const show = it => {
+      video.poster = it.poster;
+      video.src = it.src;
+      $('datasetCaption').textContent = `${it.note || group.note}.`;
+      if (inView) video.play().catch(() => {});
+    };
+    show(item);
+    // more than one clip: a tab each (every walk at once, both phones with the depth, the reference)
+    if (group.items.length > 1) {
+      tabs($('datasetClips'), group.items.map((it, i) => ({ id: String(i), label: it.label })), '0', id => show(group.items[Number(id)]));
+      $('datasetClips').hidden = false;
+    }
     new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) video.play().catch(() => {}); else video.pause();
+      inView = entry.isIntersecting;
+      if (inView) video.play().catch(() => {}); else video.pause();
     }, { threshold: 0.3 }).observe(video);
   }
   const stat = (what, value, unit) => `<div class="stat"><div class="what">${what}</div><div class="value">${value}</div><div class="unit">${unit}</div></div>`;
@@ -639,7 +655,35 @@ function renderDataset() {
   $('datasetTable').innerHTML = '<table><thead><tr><th>Walk</th><th>Scene</th><th class="num">Duration</th><th class="num">Path, m</th>'
     + '<th class="num">Note 9</th><th class="num">iPhone</th><th class="num">vs ARKit, cm</th></tr></thead>'
     + `<tbody>${rows.join('')}</tbody></table>`;
-  $('datasetFoot').textContent = `From the release's ${d.source.split('/').pop()}. ${d.foot} ${d.status}`;
+  $('datasetFoot').textContent = `From the release's ${d.source.split('/').pop()}. ${d.foot}${d.status ? ` ${d.status}` : ''}`;
+  // where it is published, and what its card says of it: the card's own rows and commands
+  const r = d.release;
+  if (r) {
+    $('datasetLinks').append(linkTo('chip-link primary', r.hub, 'Dataset on Hugging Face', 'data'),
+      linkTo('chip-link', r.licence_url, `Licence: ${r.licence}`, 'licence'),
+      Object.assign(document.createElement('span'), { className: 'chip-link plain', textContent: `${(r.bytes / 1e9).toFixed(1)} GB` }));
+    $('datasetFacts').replaceChildren(...r.facts.map(([what, value]) => {
+      const row = document.createElement('div');
+      row.append(Object.assign(document.createElement('dt'), { textContent: what }),
+        Object.assign(document.createElement('dd'), { textContent: value }));
+      return row;
+    }));
+    // a line per command, so a long one can wrap in a narrow column and still read as one command
+    // (an option such as --local-dir stays in one piece: a line may otherwise break after its hyphens)
+    $('datasetGet').replaceChildren(...r.get.map(line => {
+      const cmd = Object.assign(document.createElement('span'), { className: 'cmd' });
+      line.split(' ').forEach((word, i) => cmd.append(i ? ' ' : '', word.startsWith('-')
+        ? Object.assign(document.createElement('span'), { className: 'opt', textContent: word }) : word));
+      return cmd;
+    }));
+    $('datasetGetNote').textContent = r.get_note || '';
+    $('copyDatasetGet').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(r.get.join('\n')); $('copyDatasetGet').textContent = 'Copied'; }
+      catch { $('copyDatasetGet').textContent = 'Select and copy'; }
+      setTimeout(() => { $('copyDatasetGet').textContent = 'Copy'; }, 1600);
+    });
+    $('datasetRelease').hidden = false;
+  }
   $('datasetMapsLink').addEventListener('click', () => {
     if (datasets.some(x => x.id === 'phones')) pickDataset('phones');
   });
@@ -652,17 +696,74 @@ $('resultFigures').innerHTML = Object.entries(catalog.figures || {}).filter(([, 
     + `<figcaption>${f.caption || ''}</figcaption></figure>`).join('');
 
 // --------------------------------------------------------------------------------------------------- the page itself
-// what comes into view fades in once; the bar on top marks the section being read
+// what comes into view fades in once
 const reveal = new IntersectionObserver(entries => {
   for (const entry of entries) if (entry.isIntersecting) { entry.target.classList.add('in'); reveal.unobserve(entry.target); }
 }, { threshold: 0.08 });
 document.documentElement.classList.add('reveal-ready');
 for (const el of document.querySelectorAll('.reveal')) reveal.observe(el);
-const links = new Map([...$('navLinks').querySelectorAll('a')].map(a => [a.getAttribute('href').slice(1), a]));
+
+// One list is the way through the page: the sections that are shown, in order, under the names they give themselves
+// (data-nav, data-tour in index.html). From it come the bar on top, the tour under the film, each section's number, the
+// link to the next one that ends it, the rail at the side and the footer's list; a section that has nothing to show
+// (hidden) is in none of them.
+const stops = [...document.querySelectorAll('main > section[data-nav]')].filter(s => !s.hidden);
+const two = i => String(i + 1).padStart(2, '0');
+const svg = d => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+const RIGHT = 'M5 11h11.2l-4.6-4.6L13 5l7 7-7 7-1.4-1.4 4.6-4.6H5v-2Z';
+const DOWN = 'M11 5v11.2l-4.6-4.6L5 13l7 7 7-7-1.4-1.4-4.6 4.6V5h-2Z';
+const UP = 'M11 19V7.8l-4.6 4.6L5 11l7-7 7 7-1.4 1.4L13 7.8V19h-2Z';
+const anchor = (href, className, html) => Object.assign(document.createElement('a'), { href, className, innerHTML: html });
+$('navLinks').replaceChildren(...stops.map(s => anchor(`#${s.id}`, '', s.dataset.nav)));
+$('tour').replaceChildren(...stops.map((s, i) => anchor(`#${s.id}`, '',
+  `<span class="n">${two(i)}</span><b>${s.dataset.nav}</b>${svg(RIGHT)}<span class="line">${s.dataset.tour}</span>`)));
+$('rail').replaceChildren(...stops.map(s => anchor(`#${s.id}`, '', `<span>${s.dataset.nav}</span><i></i>`)));
+$('footNav').replaceChildren(...stops.map((s, i) => anchor(`#${s.id}`, '', `<span class="n">${two(i)}</span>${s.dataset.nav}`)));
+stops.forEach((s, i) => {
+  const eyebrow = s.querySelector('.eyebrow');
+  if (eyebrow) eyebrow.dataset.n = two(i);
+  const next = stops[i + 1], wraps = s.querySelectorAll(':scope > .wrap');
+  wraps[wraps.length - 1].append(next
+    ? anchor(`#${next.id}`, 'next', `<span class="k">Next</span><span class="n">${two(i + 1)}</span><b>${next.dataset.nav}</b>`
+      + `<span class="line">${next.dataset.tour}</span>${svg(DOWN)}`)
+    : anchor('#top', 'next up', `<span class="k">The end</span><b>Back to the top</b><span class="line"></span>${svg(UP)}`));
+});
+// a glow follows the pointer over the tour's cards
+$('tour').addEventListener('pointermove', e => {
+  const card = e.target.closest('a');
+  if (!card) return;
+  const box = card.getBoundingClientRect();
+  card.style.setProperty('--mx', `${e.clientX - box.left}px`);
+  card.style.setProperty('--my', `${e.clientY - box.top}px`);
+});
+
+// the bar and the rail mark the section being read; where the bar scrolls sideways its mark stays in sight
+const marks = stops.map(s => [s, [...document.querySelectorAll(`#navLinks a[href="#${s.id}"], #rail a[href="#${s.id}"]`)]]);
 const seen = new Map();
 const spy = new IntersectionObserver(entries => {
-  for (const entry of entries) seen.set(entry.target.id, entry.isIntersecting);
-  const current = [...links.keys()].find(id => seen.get(id));
-  for (const [id, a] of links) a.setAttribute('aria-current', String(id === current));
+  for (const entry of entries) seen.set(entry.target, entry.isIntersecting);
+  const current = stops.find(s => seen.get(s));
+  for (const [s, links] of marks) for (const a of links) a.setAttribute('aria-current', String(s === current));
+  const bar = $('navLinks'), a = current && bar.querySelector(`a[href="#${current.id}"]`);
+  if (a && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
 }, { rootMargin: '-45% 0px -50% 0px' });
-for (const id of links.keys()) if ($(id)) spy.observe($(id));
+for (const s of stops) spy.observe(s);
+
+// how far down the page: the line under the bar; past the opening, the rail and the way back up appear
+let queued = false;
+const onScroll = () => {
+  queued = false;
+  const room = document.documentElement.scrollHeight - innerHeight;
+  $('progress').style.transform = `scaleX(${room > 0 ? Math.min(1, scrollY / room) : 0})`;
+  const past = scrollY > innerHeight * 0.9;
+  $('toTop').classList.toggle('on', past);
+  $('rail').classList.toggle('on', past);
+};
+addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(onScroll); } }, { passive: true });
+addEventListener('resize', onScroll);
+onScroll();
+
+// the footer: where the paper, the code and the dataset are, and under which licences
+$('footLinks').replaceChildren(...[[paperHref, identity.arxiv ? 'Paper (arXiv)' : 'Paper (PDF)', 'paper'], [identity.code, 'Code', 'code'],
+  [release?.hub, 'Dataset', 'data']].filter(([href]) => href).map(([href, label, icon]) => linkTo('button', href, label, icon)));
+if (release) $('footLicence').textContent = `Accord is GPL-3.0; the phone rig dataset is ${release.licence}.`;

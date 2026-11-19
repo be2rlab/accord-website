@@ -116001,6 +116001,24 @@
      "poster": "assets/videos/phone_dataset_0.jpg",
      "seconds": 12.0,
      "bytes": 9954846
+    },
+    {
+     "note": "One moment on the Note 9, on the iPhone and in the iPhone's LiDAR depth, walk vio11, from the released frames, sped up",
+     "label": "Both phones and the depth",
+     "source": "~/dev/accord-phone-rig/assets/demo_phones_vio11.mp4",
+     "src": "assets/videos/phone_dataset_1.mp4",
+     "poster": "assets/videos/phone_dataset_1.jpg",
+     "seconds": 10.0,
+     "bytes": 2768806
+    },
+    {
+     "note": "RTAB-Map's map of walk vio11 from above with its trajectory growing, beside the iPhone's frame at that moment",
+     "label": "The reference",
+     "source": "~/dev/accord-phone-rig/assets/demo_reference_vio11.mp4",
+     "src": "assets/videos/phone_dataset_2.mp4",
+     "poster": "assets/videos/phone_dataset_2.jpg",
+     "seconds": 10.0,
+     "bytes": 6039106
     }
    ]
   }
@@ -116344,7 +116362,6 @@
  "dataset": {
   "video": "phone_dataset",
   "foot": "Duration and path: the reference's, over the walk. Note 9 and iPhone: their recordings as released; the iPhone's stops where its app first stalled. vs ARKit: the reference against the iPhone's ARKit, RMS after a rigid fit over the iPhone's part of the walk; how far the reference can be trusted.",
-  "status": "Not yet released: the licence and the permission to publish footage of the site are still to be confirmed.",
   "source": "runs/server/vio/release_mirror/sequences.csv",
   "walks": [
    {
@@ -116528,6 +116545,53 @@
    "frames": 148317.0,
    "night": 2,
    "indoor": 2
+  },
+  "release": {
+   "get_note": "The last command unpacks the image archives into the layout the dataset card describes. To run Accord on it: make phone_rig RELEASE=<the unpacked folder> in the Accord code, then the walks are the sequences vio01 to vio13 of the setups rig_android and rig_iphone.",
+   "name": "Accord Phone Rig Dataset",
+   "repo": "BE2R/accord-phone-rig",
+   "hub": "https://huggingface.co/datasets/BE2R/accord-phone-rig",
+   "licence": "CC BY 4.0",
+   "licence_name": "Creative Commons Attribution 4.0 International License (CC BY 4.0)",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "bytes": 16624312320,
+   "archives": 43,
+   "images": 245671,
+   "facts": [
+    [
+     "Walks",
+     "11: 2 indoors, 7 outdoors by day, 2 outdoors at night"
+    ],
+    [
+     "Length",
+     "59 minutes, 2.5 km"
+    ],
+    [
+     "Recordings",
+     "21 (10 Note 9, 11 iPhone)"
+    ],
+    [
+     "Frames",
+     "99,637 Note 9 (640x480, 30 Hz, IMU 210 Hz); 48,680 iPhone (640x480, about 20 to 30 Hz, IMU 100 Hz, LiDAR depth 256x192)"
+    ],
+    [
+     "Reference",
+     "RTAB-Map on the LiDAR iPhone: a trajectory at about 1 Hz and a coloured map per walk"
+    ],
+    [
+     "Size",
+     "16.6 GB in 43 archives, 245,671 images"
+    ],
+    [
+     "Licence",
+     "Creative Commons Attribution 4.0 International License (CC BY 4.0)"
+    ]
+   ],
+   "get": [
+    "pip install -U huggingface_hub",
+    "hf download BE2R/accord-phone-rig --repo-type dataset --local-dir accord-phone-rig",
+    "python3 accord-phone-rig/tools/phone_rig_get.py --unpack accord-phone-rig"
+   ]
   }
  },
  "scoreboard": [
