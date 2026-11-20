@@ -108,8 +108,10 @@ if (authors.length && identity.title) {
   const key = `${authors[0].split(' ').pop().toLowerCase()}${identity.year || ''}accord`;
   const names = authors.map(a => { const parts = a.split(' '); return `${parts.pop()}, ${parts.join(' ')}`; }).join(' and ');
   const eprint = identity.arxiv?.match(/(\d{4}\.\d{4,5})/)?.[1];
-  $('bibtex').textContent = `@misc{${key},\n  title  = {${identity.title}},\n  author = {${names}},\n  year   = {${identity.year || ''}}`
-    + (eprint ? `,\n  eprint = {${eprint}},\n  archivePrefix = {arXiv}` : '') + '\n}';
+  const fields = [['title', identity.title], ['author', names], ['year', identity.year || '']]
+    .concat(eprint ? [['eprint', eprint], ['archivePrefix', 'arXiv']] : []);
+  const width = Math.max(...fields.map(([k]) => k.length));
+  $('bibtex').textContent = `@misc{${key},\n${fields.map(([k, v]) => `  ${k.padEnd(width)} = {${v}}`).join(',\n')}\n}`;
   $('cite').hidden = false;
   $('copyBibtex').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText($('bibtex').textContent); $('copyBibtex').textContent = 'Copied'; }

@@ -13,7 +13,7 @@
   "title": "Accord: Universal Online Metric Localization and Dense Mapping from one Camera and an IMU",
   "year": "2026",
   "code": "https://github.com/be2rlab/ACCORD",
-  "arxiv": null,
+  "arxiv": "https://arxiv.org/abs/2611.25279",
   "paper_pdf": "renders/arxiv/main.pdf"
  },
  "film": {
